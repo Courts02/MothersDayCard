@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mother's Day Flip Card</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle, #ffd6e8, #ffb6d9);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
+      position: relative;
+    }
+
+    .scene {
+      width: 300px;
+      height: 400px;
+      perspective: 1000px;
+      z-index: 2;
+    }
+
+    .card {
+      width: 105%;
+      height: 105%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 1s ease;
+    }
+
+    .card.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+
+    .card-front {
+      background: #ffccd5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 22px;
+      font-weight: bold;
+      color: #d6336c;
+      padding: 20px;
+    }
+
+    .card-back {
+      background: white;
+      transform: rotateY(180deg);
+      padding: 20px;
+      text-align: center;
+      color: #444;
+    }
+
+    .card-back h1 {
+      color: #d6336c;
+      margin-top: 30px;
+    }
+
+    .card-back p {
+      margin-top: 20px;
+      font-size: 16px;
+    }
+
+    .flower {
+      margin-top: 30px;
+      font-size: 30px;
+    }
+
+    .toggle-btn {
+      margin-top: 20px;
+      background: #ff85a2;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      background-color: #ff85a2;
+      z-index: 2;
+      transition: background-color 0.3s ease;
+    }
+
+    .toggle-btn:hover {
+      background: #d6336c;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Custom audio player styles */
+    .audio-container {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .audio-button {
+      background-color: #ff85a2;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .audio-button:hover {
+      background-color: #d6336c;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="scene">
+      <div class="card" id="card">
+        <div class="card-face card-front">
+          💖 Dear Mom, 💖
+        </div>
+        <div class="card-face card-back">
+          <h1>Happy Mother's Day!</h1>
+          <p>Of all the gifts that life has to offer,<br> a loving mother is the greatest of them all. <br> Thank you mom, for always supporting me and sticking by my side. <br> Words cannot describe how grateful I am for you, <br> I love you, mom.</p>
+          <div class="flower">🌸🌼🌷</div>
+        </div>
+      </div>
+    </div>
+    <button class="toggle-btn" onclick="toggleCard()">Open / Close</button>
+    
+    <!-- Custom Audio Controls -->
+    <div class="audio-container">
+      <audio id="audio" preload="auto">
+        <source src="Darius rucker - Wagon Wheel (Lyrics) [wjzYh36uMds].mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+      </audio>
+      <button class="audio-button" onclick="toggleAudio()">Play / Pause</button>
+    </div>
+  </div>
+
+  <script>
+    const card = document.getElementById('card');
+    const burstContainer = document.getElementById('burst-container');
+    const audio = document.getElementById('audio');
+
+    function toggleCard() {
+      const isFlipped = card.classList.contains('is-flipped');
+      card.classList.toggle('is-flipped');
+
+      if (!isFlipped) {
+        triggerHeartBurst();
+      }
+    }
+
+    function triggerHeartBurst() {
+      for (let i = 0; i < 20; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'burst-heart';
+        heart.textContent = '❤️';
+
+        const x = (Math.random() - 0.5) * 200 + 'px';
+        const y = (Math.random() - 0.5) * 200 + 'px';
+
+        heart.style.left = '50%';
+        heart.style.top = '50%';
+        heart.style.setProperty('--x', x);
+        heart.style.setProperty('--y', y);
+        heart.style.fontSize = `${Math.random() * 20 + 15}px`;
+
+        burstContainer.appendChild(heart);
+
+        setTimeout(() => {
+          heart.remove();
+        }, 1000);
+      }
+    }
+
+    function toggleAudio() {
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    }
+  </script>
+</body>
+</html>
