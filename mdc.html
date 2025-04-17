@@ -13,6 +13,7 @@
       background: radial-gradient(circle, #ffd6e8, #ffb6d9);
       height: 100vh;
       overflow: hidden;
+      margin: 0;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -20,11 +21,17 @@
       position: relative;
     }
 
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 2;
+    }
+
     .scene {
       width: 300px;
       height: 400px;
       perspective: 1000px;
-      z-index: 2;
     }
 
     .card {
@@ -83,7 +90,8 @@
       font-size: 30px;
     }
 
-    .toggle-btn {
+    .toggle-btn,
+    .audio-button {
       margin-top: 20px;
       background: #ff85a2;
       border: none;
@@ -92,19 +100,51 @@
       font-size: 16px;
       border-radius: 10px;
       cursor: pointer;
-      background-color: #ff85a2;
-      z-index: 2;
       transition: background-color 0.3s ease;
     }
 
-    .toggle-btn:hover {
+    .toggle-btn:hover,
+    .audio-button:hover {
       background: #d6336c;
     }
 
-    .container {
+    @media (max-width: 400px) {
+  .scene {
+    width: 90vw;
+    height: 60vh;
+  }
+
+  .card {
+    width: 100%;
+    height: 100%;
+  }
+
+  .card-front, .card-back {
+    font-size: 18px;
+    padding: 15px;
+  }
+
+  .toggle-btn, .audio-button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}
+
+    .audio-container {
+      margin-top: 10px;
       display: flex;
-      flex-direction: column;
       align-items: center;
+      justify-content: center;
+    }
+
+    #burst-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 3;
     }
 
     .burst-heart {
@@ -112,6 +152,7 @@
       transform: translate(-50%, -50%);
       animation: burst 1s ease-out forwards;
       pointer-events: none;
+      z-index: 4;
     }
 
     @keyframes burst {
@@ -124,28 +165,6 @@
         opacity: 0;
       }
     }
-
-    /* Custom audio player styles */
-    .audio-container {
-      margin-top: 20px;
-      display: flex;
-      align-items: center;
-    }
-
-    .audio-button {
-      background-color: #ff85a2;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    .audio-button:hover {
-      background-color: #d6336c;
-    }
-
   </style>
 </head>
 <body>
@@ -157,14 +176,20 @@
         </div>
         <div class="card-face card-back">
           <h1>Happy Mother's Day!</h1>
-          <p>Of all the gifts that life has to offer,<br> a loving mother is the greatest of them all. <br> Thank you mom, for always supporting me and sticking by my side. <br> Words cannot describe how grateful I am for you, <br> I love you, mom.</p>
+          <p>
+            Of all the gifts that life has to offer,<br>
+            a loving mother is the greatest of them all.<br>
+            Thank you mom, for always supporting me and sticking by my side.<br>
+            Words cannot describe how grateful I am for you,<br>
+            I love you, mom.
+          </p>
           <div class="flower">🌸🌼🌷</div>
         </div>
       </div>
     </div>
+
     <button class="toggle-btn" onclick="toggleCard()">Open / Close</button>
-    
-    <!-- Custom Audio Controls -->
+
     <div class="audio-container">
       <audio id="audio" preload="auto">
         <source src="Darius rucker - Wagon Wheel (Lyrics) [wjzYh36uMds].mp3" type="audio/mp3">
@@ -175,7 +200,7 @@
   </div>
 
   <!-- Heart burst container -->
-  <div id="burst-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></div>
+  <div id="burst-container"></div>
 
   <script>
     const card = document.getElementById('card');
@@ -204,7 +229,7 @@
         heart.style.top = '50%';
         heart.style.setProperty('--x', x);
         heart.style.setProperty('--y', y);
-        heart.style.fontSize = `${Math.random() * 20 + 15}px`;
+        heart.style.fontSize = `${Math.random() * 25 + 30}px`;
 
         burstContainer.appendChild(heart);
 
